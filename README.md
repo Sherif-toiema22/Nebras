@@ -29,6 +29,25 @@ Nebras/
 ```
 > ملاحظة: بعض ملفات `docs/` تذكر المجلدين باسم `backend/` و`frontend/`، والاسمان الفعليان هنا `backEnd/` و`frontEnd/`.
 
+## المعمارية
+تطبيق خلفية واحد مقسَّم لوحدات (Modular Monolith)، مع خدمتين مؤجلتين للمحادثات والذكاء الاصطناعي. الأسباب في [ADR-0001](docs/adr/0001-modular-monolith.md).
+
+```mermaid
+flowchart LR
+  U["المستخدمون<br/>طالب · معلم · ولي أمر · مدير"] --> A["Angular<br/>frontEnd"]
+  A -->|HTTPS| N["Nginx"]
+  subgraph VPS["خادم واحد VPS"]
+    N -->|"/api"| S["Spring Boot<br/>backEnd: وحدات مستقلة"]
+    SEC["الأمان<br/>JWT + قواعد الوصول"] -.-> S
+    S -->|SQL| D[("PostgreSQL")]
+    F["Flyway"] --> D
+    S -.لاحقًا.-> C["خدمة المحادثات"]
+    S -.لاحقًا.-> I["خدمة الذكاء الاصطناعي"]
+  end
+```
+
+**النسخة التفاعلية** (مرسومة بأداة Archify): الملف [docs/architecture/nebras-architecture.html](docs/architecture/nebras-architecture.html). GitHub يعرض كود HTML ولا يشغّله، فافتحه [من هنا](https://htmlpreview.github.io/?https://github.com/Sherif-toiema22/Nebras/blob/main/docs/architecture/nebras-architecture.html) أو نزّله وافتحه في المتصفح.
+
 ## المتطلبات
 Java 21، Maven (أو `mvnw` المرفق)، Node.js وnpm، Docker، Git.
 
@@ -48,7 +67,7 @@ npm start                     # ثم افتح http://localhost:4200
 ```
 
 ## ابدأ من هنا
-1. افهم التصميم: [docs/01-architecture.md](docs/01-architecture.md)
+1. افهم التصميم: [docs/01-architecture.md](docs/01-architecture.md) · [الرسم التفاعلي](docs/architecture/nebras-architecture.html)
 2. اعرف لماذا اخترنا ما اخترنا: [docs/adr/](docs/adr/)
 3. تابع ما تم خطوة بخطوة: [docs/devlog/](docs/devlog/)
 4. التشغيل والنشر: [docs/runbook.md](docs/runbook.md)
