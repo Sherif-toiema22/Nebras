@@ -2,13 +2,9 @@ package com.nebras.attendance;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "attendance")
-@Getter @Setter @NoArgsConstructor
 public class Attendance {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,4 +19,15 @@ public class Attendance {
     private AttendanceStatus status;
 
     private String note;
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public Long getStudentId() { return studentId; }
+    public void setStudentId(Long studentId) { this.studentId = studentId; }
+    public LocalDate getAttendanceDay() { return attendanceDay; }
+    public void setAttendanceDay(LocalDate attendanceDay) { this.attendanceDay = attendanceDay; }
+    public AttendanceStatus getStatus() { return status; }
+    public void setStatus(AttendanceStatus status) { this.status = status; }
+    public String getNote() { return note; }
+    public void setNote(String note) { this.note = note; }
 }
